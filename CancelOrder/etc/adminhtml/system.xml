@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="infobit" translate="label" sortOrder="400">
+            <label>Infobit</label>
+        </tab>
+        <section id="infobit" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Cancel Order Configuration</label>
+            <tab>infobit</tab>
+            <resource>Infobit_CancelOrder::config_catalog</resource>
+            <group id="cancel_order" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Cancel Order </label>
+                <field id="enable" translate="label" type="select" sortOrder="0" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Cancel order from frontend Enabled?</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="status" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Requested Cancel Order Status</label>
+                    <source_model>Infobit\CancelOrder\Model\Config\Source\Order\UnassignedStatus</source_model>
+                    <comment>Order status will be changed to this order when someone cancel an order Note:This status should not be assigned to any state</comment>
+                </field>
+                <field id="receiver" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Order Cancel Request Email Receiver</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="request" translate="label comment" type="select" sortOrder="12" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Order cancel email Template</label>
+                    <comment>Email template will be use to send an email to specified admin email to notify order cancellation.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Template</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

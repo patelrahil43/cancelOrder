@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Infobit. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../Backend/etc/menu.xsd">
+    <menu>
+        <!--AddMenu-->
+        <add id="Infobit_CancelOrder::cancelorder" dependsOnModule="Infobit_CancelOrder" title="Cancel Order Request" module="Infobit_CancelOrder" sortOrder="11" resource="Infobit_CancelOrder::cancelorder"/>
+        <add id="Infobit_CancelOrder::reasons" title="Reasons" module="Infobit_CancelOrder" sortOrder="11" parent="Infobit_CancelOrder::cancelorder" resource="Infobit_CancelOrder::reasons"/>
+        <add id="Infobit_CancelOrder::reason" title="Manage Reasons" module="Infobit_CancelOrder" sortOrder="11" parent="Infobit_CancelOrder::reasons" action="cancelorder/reason/index" resource="Infobit_CancelOrder::reason" />
+        
+        
+        <!-- menu for cancel order requests-->
+        <add id="Infobit_CancelOrder::cancelrequests" title="Manage Cancel Order Requests" module="Infobit_CancelOrder" sortOrder="11" parent="Infobit_CancelOrder::cancelorder"  resource="Infobit_CancelOrder::cancelrequests" />
+        <add id="Infobit_CancelOrder::cancelrequest" title="Manage Cancel Order Requests" module="Infobit_CancelOrder" sortOrder="11" parent="Infobit_CancelOrder::cancelrequests"  action="cancelorder/request/" resource="Infobit_CancelOrder::cancelrequest" />
+        <!--<add id="Infobit_CancelOrder::cancelrequest_orders" title="Manage Cancel Order Requests" module="Infobit_CancelOrder" sortOrder="11" parent="Infobit_CancelOrder::cancelorder_question" action="mageunslider/sliders" resource="Infobit_CancelOrder::cancelrequest_orders" />-->
+    </menu>
+</config>

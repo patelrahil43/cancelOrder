@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="../../../../../../../lib/internal/Magento/Framework/View/Layout/etc/page_configuration.xsd">
+    <update handle="customer_account"/>
+    <body>
+        <referenceContainer name="page.main.title" remove="true" />
+        <referenceContainer name="content">	
+            <block class="Infobit\CancelOrder\Block\Request\Confirm" name="request_sucess" template="request/confirm.phtml" cacheable="false">
+<!--                <block class="Infobit\CancelOrder\Block\Request\Items" name="request.cancel.items" template="request/cancellation/items.phtml" cacheable="false" />
+                <block class="Infobit\CancelOrder\Block\Request\Cancellation" name="request.cancel.form" template="request/cancellation/form.phtml" cacheable="false" />-->
+            </block>
+        </referenceContainer>      
+    </body>
+</page>

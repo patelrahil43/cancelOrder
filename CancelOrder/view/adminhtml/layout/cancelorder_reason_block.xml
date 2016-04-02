@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2015 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceBlock name="adminhtml.cancelorder.reason.container">
+            <block class="Infobit\CancelOrder\Block\Adminhtml\Reason\Grid" name="adminhtml.cancelorder.reason.grid" as="grid">
+                <arguments>
+                    <argument name="id" xsi:type="string">reasonGrid</argument>
+                    <argument name="dataSource" xsi:type="object">Infobit\CancelOrder\Model\ResourceModel\Reason\Collection</argument>
+                    <argument name="default_sort" xsi:type="string">entity_id</argument>
+                    <argument name="default_dir" xsi:type="string">desc</argument>
+                    <argument name="use_ajax" xsi:type="string">1</argument>
+                </arguments>
+                <block class="Magento\Backend\Block\Widget\Grid\Massaction" name="adminhtml.cancelorder.reason.grid.massaction" as="grid.massaction">
+                    <arguments>
+                        <argument name="massaction_id_field" xsi:type="string">entity_id</argument>
+                        <argument name="form_field_name" xsi:type="string">entity_ids</argument>
+                        <argument name="use_select_all" xsi:type="string">1</argument>
+                        <argument name="options" xsi:type="array">
+                            <item name="disable" xsi:type="array">
+                                <item name="label" xsi:type="string" translate="true">Disable</item>
+                                <item name="url" xsi:type="string">*/*/massDisable</item>
+                            </item>
+                            <item name="enable" xsi:type="array">
+                                <item name="label" xsi:type="string" translate="true">Enable</item>
+                                <item name="url" xsi:type="string">*/*/massEnable</item>
+                            </item>
+                        </argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\Export" name="adminhtml.cancelorder.reason.grid.export" as="grid.export">
+                    <arguments>
+                        <argument name="exportTypes" xsi:type="array">
+                            <item name="csv" xsi:type="array">
+                                <item name="urlPath" xsi:type="string">*/*/exportCsv</item>
+                                <item name="label" xsi:type="string" translate="true">CSV</item>
+                            </item>
+                        </argument>
+                    </arguments>
+                </block>
+                <block class="Magento\Backend\Block\Widget\Grid\ColumnSet" name="adminhtml.cancelorder.reason.grid.columnSet" as="grid.columnSet">
+                    <arguments>
+                        <argument name="id" xsi:type="string">problemGrid</argument>
+                    </arguments>
+                    <block class="Magento\Backend\Block\Widget\Grid\Column" as="subscriber_id">
+                        <arguments>
+                            <argument name="header" xsi:type="string" translate="true">Reason ID</argument>
+                            <argument name="index" xsi:type="string">entity_id</argument>
+                            <argument name="header_css_class" xsi:type="string">col-id</argument>
+                            <argument name="column_css_class" xsi:type="string">col-id</argument>
+                        </arguments>
+                    </block>
+                    <block class="Magento\Backend\Block\Widget\Grid\Column" as="name">
+                        <arguments>
+                            <argument name="header" xsi:type="string" translate="true">Reason</argument>
+                            <argument name="index" xsi:type="string">name</argument>
+                            <argument name="header_css_class" xsi:type="string">col-name</argument>
+                            <argument name="column_css_class" xsi:type="string">ccol-name</argument>
+                        </arguments>
+                    </block>
+                    <block class="Magento\Backend\Block\Widget\Grid\Column" as="status">
+                        <arguments>
+                            <argument name="header" xsi:type="string" translate="true">Status</argument>
+                            <argument name="index" xsi:type="string">status</argument>
+                            <argument name="type" xsi:type="string">options</argument>
+                            <argument name="options" xsi:type="options" model="Infobit\CancelOrder\Model\Reason\Options\Status" />
+                            <argument name="header_css_class" xsi:type="string">col-status</argument>
+                            <argument name="column_css_class" xsi:type="string">ccol-status</argument>
+                        </arguments>
+                    </block>
+                    <block class="Magento\Backend\Block\Widget\Grid\Column" as="action">
+                        <arguments>
+                            <argument name="header" xsi:type="string" translate="true">Action</argument>
+                            <argument name="filter" xsi:type="string">0</argument>
+                            <argument name="sortable" xsi:type="string">0</argument>
+                            <argument name="no_link" xsi:type="string">1</argument>
+                            <argument name="index" xsi:type="string">entity_id</argument>
+                            <argument name="renderer" xsi:type="string">Infobit\CancelOrder\Block\Adminhtml\Reason\Grid\Renderer\Action</argument>
+                        </arguments>
+                    </block>
+                </block>
+            </block>
+        </referenceBlock>
+    </body>
+</page>

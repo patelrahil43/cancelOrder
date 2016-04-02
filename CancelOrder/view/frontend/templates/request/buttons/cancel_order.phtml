@@ -1,0 +1,28 @@
+<?php
+/**
+ * Copyright © 2015 infobitcommerce. All rights reserved.
+ */
+?>
+<?php 
+
+$isEnabled = $this->helper('Infobit\CancelOrder\Helper\Data')->getConfig('infobit/cancel_order/enable');
+$requestStatus = $this->helper('Infobit\CancelOrder\Helper\Data')->getConfig('infobit/cancel_order/status');
+$currentStatus = $block->getOrder()->getStatus();
+$currentState = $block->getOrder()->getStatus();
+
+$excludedStatuses = array('canceled','closed');
+
+if($isEnabled && $requestStatus != $currentStatus && !in_array($currentState,$excludedStatuses)) {
+?>
+<div class="spacer_side container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="st_pr_sel">
+                <a class="button" href="<?php echo $block->getCancelRequestUrl($block->getOrder());?>" title="cancel order">cancel</a>
+<!--    <a class="button" href="javascript:void(0);">review product</a>-->
+</div>
+        </div>
+    </div>
+</div>
+
+<?php } ?>

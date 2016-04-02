@@ -1,0 +1,176 @@
+<?php
+/**
+ * Copyright © 2015 infobitcommerce. All rights reserved.
+ */
+?>
+<?php
+/**
+ * {{controller}} {{action}} template
+ *
+ * @var $block \Infobit\CancelOrder\Block\Request\Cancellation
+ */
+$_order = $block->getOrder();
+
+if (!$_order->getId()) {
+    $url = $block->getBackUrl($_order);
+    header('Location: ' . $url);
+    exit;
+}
+
+$reasonList = $block->getReasonList();
+?>
+<form method="post" action="<?php echo $block->getFormUrl($_order); ?>" id="cancel-request-post" data-hasrequired="<?php /* @escapeNotVerified */ echo __('* Required Fields') ?>"
+      data-mage-init='{"validation":{}}' >
+    <div class="">
+        <div class="cancel_block">
+            <div class="container-fluid">
+                <div class="row">
+                    <?php $_items = $_order->getItemsCollection(); ?>
+                    <?php $_index = 0; ?>
+                    <?php $_count = $_items->count(); ?>
+                    <?php $_giftMessage = '' ?>
+                    <?php
+                    if ($_count == 0) {
+
+                        echo "No Items available to Cancel";
+                    } else {
+                        ?>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <span class="rcan_title">request cancellation</span>
+                            <div class="table-responsive one_pro_table">
+                                <table class="table o_d_table ">
+                                    <thead>
+                                        <tr class="tb_head">
+                                            <td colspan="2">Item</td>
+                                            <td class="u_prc">Unit Price</td>
+                                            <td> Quantity</td>
+                                            <td>Total</td>
+                                            <td></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        <?php foreach ($_items as $_item): ?>
+                                            <?php
+                                            if ($_item->getParentItem()) {
+                                                continue;
+                                            } else if ($_item->getQtyCanceled() > 0 || $_item->getQtyRefunded() > 0) {
+                                                continue;
+                                            } else if($_item->getQtyOrdered() == $_item->getQtyCanceled()) {
+                                                continue;
+                                            }
+                                            ?>
+
+                                            <tr>
+                                                <td class="cart_p_img">
+                                                    <?php
+                                                    $product = $_item->getProduct();
+                                                    $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
+                                                    $image = "order_cancel_request_item_thumbnail";
+                                                    $productImage = $_imagehelper->init($product, $image)->constrainOnly(FALSE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(400)->getUrl();
+                                                    ?>
+
+                                                    <img class=" cart_pr ïmg-responsive" src="<?php echo $productImage; ?>">
+                                                </td>
+                                                <td class="col name" data-th="<?php echo $block->escapeHtml(__('Product Name')); ?>">
+                                                    <strong class="product name product-item-name"><?php echo $block->escapeHtml($_item->getName()) ?></strong>
+
+                                                    <?php echo $block->escapeHtml($_item->getDescription()) ?>
+                                                    <ul class="items-qty">
+                                                        <?php if ($_item->getQtyOrdered() > 0): ?>
+                                                            <li class="item">
+                                                                <span class="title"><?php /* @escapeNotVerified */ echo __('Ordered qty'); ?></span>
+                                                                <span class="content"><?php /* @escapeNotVerified */ echo $_item->getQtyOrdered() * 1 ?></span>
+                                                            </li>
+                                                        <?php endif; ?>
+                                                        <?php if ($_item->getQtyShipped() > 0): ?>
+                                                            <li class="item">
+                                                                <span class="title"><?php /* @escapeNotVerified */ echo __('Shipped qty'); ?></span>
+                                                                <span class="content"><?php /* @escapeNotVerified */ echo $_item->getQtyShipped() * 1 ?></span>
+                                                            </li>
+                                                        <?php endif; ?>
+                                                        <?php if ($_item->getQtyCanceled() > 0): ?>
+                                                            <li class="item">
+                                                                <span class="title"><?php /* @escapeNotVerified */ echo __('Canceled qty'); ?></span>
+                                                                <span class="content"><?php /* @escapeNotVerified */ echo $_item->getQtyCanceled() * 1 ?></span>
+                                                            </li>
+                                                        <?php endif; ?>
+                                                        <?php if ($_item->getQtyRefunded() > 0): ?>
+                                                            <li class="item">
+                                                                <span class="title"><?php /* @escapeNotVerified */ echo __('Refunded qty'); ?></span>
+                                                                <span class="content"><?php /* @escapeNotVerified */ echo $_item->getQtyRefunded() * 1 ?></span>
+                                                            </li>
+                                                        <?php endif; ?>
+                                                    </ul>
+                                                </td>
+                                                <td class="vam u_p tac"><?php echo $this->helper('Magento\Checkout\Helper\Data')->formatPrice($_item->getPrice());?></td>
+                                                <td class="vam tac">
+                                                    <div class="sp-quantity">
+                                                        <div class="sp-minus fff"> <a href="javascript:void(0);" class="ddd">-</a> </div>
+                                                        <div class="sp-input">
+                                                            <input width="20px" type="text" value="<?php echo (int)$_item->getQtyOrdered()?>" name="item[<?php echo $_item->getItemId();?>][qty]" class="quntity-input"> </div>
+                                                        <div class="sp-plus fff"> <a href="javascript:void(0);" class="ddd">+</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="vam t_p tac ">
+                                                    <?php echo $this->helper('Magento\Checkout\Helper\Data')->formatPrice($_item->getRowTotal());?>
+                                                </td>
+                                                <td class="vam tac">
+                                                    <a class="remove_pro" href="javascript:void(0);">X</a>
+                                                </td>
+                                            </tr>
+
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="cncl_form">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12">
+                                <span class="pg_lab">Reason for cancellation</span>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <div class="select-style">
+                                    <select data-validate="{required:true}" id="reason" name="reason">
+                                        <option value="">select reason</option>
+                                       <?php foreach($reasonList as $reasonId=>$reason) {   ?>
+                                        <option value="<?php echo $reasonId;?>"><?php echo $reason;?></option>
+                                       <?php } ?>
+                                    </select>
+                                    <span class="dp_arrow"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12">
+                                <span class="pg_lab">Comments</span>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <textarea rows="4" data-validate="{required:true}" cols="" id="comment" name="comment"></textarea>
+                            </div>
+                        </div>
+                    <?php } ?>
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-5 col-xs-12">
+
+                        </div>
+                        <br><br>
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                            <div class="b_blk">
+                                <a class="button primary back_button" style="color:white;" href="<?php echo $block->getBackUrl($_order); ?>">back</a>
+                                <?php if ($_count > 0) { ?>
+                                    <button type="submit" class="button  confirm_button" >confirm cancellation</button>
+                                <?php } ?>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

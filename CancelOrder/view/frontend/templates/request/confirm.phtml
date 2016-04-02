@@ -1,0 +1,95 @@
+<?php
+/**
+ * Copyright © 2015 infobitcommerce. All rights reserved.
+ */
+?>
+<?php
+/**
+ * {{controller}} {{action}} template
+ *
+ * @var $block \Infobit\CancelOrder\Block\Request\Cancellation
+ */
+$_order = $block->getOrder();
+
+
+
+
+$cancelItemCollection = $block->getItemCollection();
+
+print "<pre>";
+print_r($cancelItemCollection);
+print "</pre>";
+//if (!$_order->getId()) {
+//    $url = $block->getBackUrl($_order);
+////    header('Location: ' . $url);
+////    exit;
+//}
+?>
+<div class="cancel_block">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <span class="rcan_title">request cancellation</span>
+                <span class="conf_note">We have received your cancellation request for the following <?php echo count($cancelItemCollection); ?> item(s). you will receive a confirmation once the cancellation is completed.</span>
+                <div class="table-responsive one_pro_table">
+                    <table class="table o_d_table ">
+                        <thead>
+                            <tr class="tb_head">
+                                <td colspan="2">Item</td>
+                                <td class="u_prc">Unit Price</td>
+                                <td> Quantity</td>
+                                <td>Total</td>
+                                <td></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <?php $_items = $_order->getItemsCollection(); ?>
+                            <?php $_index = 0; ?>
+                            <?php $_count = $_items->count(); ?>
+                            <?php $_giftMessage = '' ?>
+                            <?php ?>
+                            <?php foreach ($_items as $_item): ?>
+                                <?php
+                                if (empty($cancelItemCollection[$_item->getItemId()])) {
+
+                                    continue;
+                                }
+                                ?>
+
+                                <tr>
+
+                                    <td class="cart_p_img">
+                                        <?php
+                                        $product = $_item->getProduct();
+                                        $_imagehelper = $this->helper('Magento\Catalog\Helper\Image');
+                                        $image = "order_cancel_request_item_thumbnail";
+                                        $productImage = $_imagehelper->init($product, $image)->constrainOnly(FALSE)->keepAspectRatio(TRUE)->keepFrame(FALSE)->resize(400)->getUrl();
+                                        ?>
+
+                                        <img class=" cart_pr ïmg-responsive" src="<?php echo $productImage; ?>">
+                                    </td>
+                                    <td class="col name" data-th="<?php echo $block->escapeHtml(__('Product Name')); ?>">
+                                                    <strong class="product name product-item-name"><?php echo $block->escapeHtml($_item->getName()) ?></strong>
+                                    </td>
+                                     <td class="vam u_p tac"><?php echo $this->helper('Magento\Checkout\Helper\Data')->formatPrice($_item->getPrice());?></td>
+                                    <td class="vam tac">
+                                       <?php echo $cancelItemCollection[$_item->getItemId()]; ?>
+                                    </td>
+                                    <td class="vam t_p tac ">
+                                        <?php echo $this->helper('Magento\Checkout\Helper\Data')->formatPrice($_item->getRowTotal());?>
+                                    </td>
+                                    <td class="vam tac">
+
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </div>
+                <a href="<?php echo $block->getBackUrl($_order) ?>" class="button don_button">done</a>
+            </div>
+        </div>
+
+    </div>
+</div>
